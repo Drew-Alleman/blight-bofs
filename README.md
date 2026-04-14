@@ -6,7 +6,8 @@ Source: ([touch.c](https://github.com/Drew-Alleman/blight-bofs/blob/main/touch/s
 Compilied: ([touch.x64.o](https://github.com/Drew-Alleman/blight-bofs/blob/main/bofs/touch.x64.o)) <br>
 
 ## Help Page
-<img width="916" height="891" alt="image" src="https://github.com/user-attachments/assets/3398444a-e656-4cf5-91bf-4fa854de437e" />
+<img width="1140" height="941" alt="image" src="https://github.com/user-attachments/assets/314f2a8c-1ea2-4bac-9f2f-6d375b1c575f" />
+
 
 
 ## Example Output
