@@ -18,7 +18,10 @@
         {"name": "flags", "type": "z", "description": "-c no create", "default": ""}
       ],
       "test_invocation": "touch C:\\Windows\\Temp\\blight_touch_test.txt",
-      "test_validator": {"type": "regex", "pattern": "created file|touch .+ ->"},
+      "test_validator": {"type": "regex", "pattern": "created file:.+|touch .+ ->"},
+      "rating": 4,
+      "rating_basis": "exact",
+      "rating_updated": "2026-04-13",
       "parent_command": "utilities"
     }
   },
