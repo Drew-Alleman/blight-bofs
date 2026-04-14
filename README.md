@@ -2,7 +2,7 @@
 BOF repository for my C2 (coming out soon)
 
 # Touch
-Source: ([touch.c](https://github.com/Drew-Alleman/blight-bofs/blob/main/touch/src/touch.c)) <br>
+Source: ([touch.c](https://github.com/Drew-Alleman/blight-bofs/blob/main/src/touch/touch.c)) <br>
 Compilied: ([touch.x64.o](https://github.com/Drew-Alleman/blight-bofs/blob/main/bofs/touch.x64.o)) <br>
 
 ## Help Page
