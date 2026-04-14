@@ -190,8 +190,7 @@ void go(char *args, int args_len) {
 
     char *filepath  = BeaconDataExtract(&parser, NULL);
     char *timestamp = BeaconDataExtract(&parser, NULL);
-    char *flags     = BeaconDataExtract(&parser, NULL);
-    BOOL no_create = (flags && flags[0] != '\0');
+    int no_create   = BeaconDataInt(&parser);
 
     if (!filepath || filepath[0] == '\0') {
         BeaconPrintf(CALLBACK_ERROR, "[-] No file path provided");
