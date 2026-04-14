@@ -24,6 +24,18 @@
       "rating_basis": "exact",
       "rating_updated": "2026-04-13",
       "parent_command": "utilities"
+    },
+    "test_bof.x64.o": {
+      "name": "test_bof",
+      "quick_description": "Sanity check for BOF execution",
+      "description": "Baseline BOF that prints a success message with the args buffer length.\nUsed by the test pipeline to verify the BOF loader is working.\n\nExamples:\n  test_bof              Prints: BOF executed successfully! args_len=0",
+      "args": [],
+      "test_invocation": "test_bof",
+      "test_validator": {"type": "regex", "pattern": "BOF executed successfully! args_len=0"},
+      "rating": 4,
+      "rating_basis": "exact",
+      "rating_updated": "2026-04-13",
+      "parent_command": "utilities"
     }
   },
   "commands": {}

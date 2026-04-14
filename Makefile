@@ -1,10 +1,13 @@
 CC = x86_64-w64-mingw32-gcc
 CFLAGS = -c -Wall
 
-all: touch/touch.x64.o
+all: bofs/touch.x64.o bofs/test_bof.x64.o
 
-touch/touch.x64.o: touch/src/touch.c
+bofs/touch.x64.o: src/touch/touch.c
+	$(CC) $(CFLAGS) -I. $< -o $@
+
+bofs/test_bof.x64.o: src/test_bof/test_bof.c
 	$(CC) $(CFLAGS) -I. $< -o $@
 
 clean:
-	find . -name "*.x64.o" -delete
+	rm -f bofs/*.x64.o
