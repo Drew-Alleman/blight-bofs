@@ -1,0 +1,26 @@
+{
+  "schema_version": 2,
+  "name": "blight-bofs",
+  "url": "",
+  "author": "Drew Alleman",
+  "description": "Custom BOFs for blight C2.",
+  "installed": "2026-04-13",
+  "last_refreshed": "2026-04-13",
+  "parser_version": 1,
+  "makefile": "",
+  "bofs": {
+    "touch.x64.o": {
+      "name": "touch",
+      "quick_description": "Create files and modify timestamps (mimics Unix touch). Timestamps are interpreted as local time on the target.",
+      "args": [
+        {"name": "filepath", "type": "z", "description": "Target file path"},
+        {"name": "timestamp", "type": "z", "description": "-t [[CC]YY]MMDDhhmm[.ss] or -d freeform date string", "default": ""},
+        {"name": "flags", "type": "z", "description": "-c no create", "default": ""}
+      ],
+      "test_invocation": "touch C:\\Windows\\Temp\\blight_touch_test.txt",
+      "test_validator": {"type": "regex", "pattern": "created file|touch .+ ->"},
+      "parent_command": "utilities"
+    }
+  },
+  "commands": {}
+}
