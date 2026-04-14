@@ -19,3 +19,9 @@ Compilied: ([touch.x64.o](https://github.com/Drew-Alleman/blight-bofs/blob/main/
 [+] Results for BOF Package Manager (Job 37e6029a) in 2.9s:
 [+] touch C:\Windows\Temp\test.txt -> 01131500
 ```
+# test_bof
+Source: [test_bof.c](https://github.com/Drew-Alleman/blight-bofs/blob/main/src/test_bof/test_bof.c)<br>
+Compilied: [test_bof.x64.o](https://github.com/Drew-Alleman/blight-bofs/blob/main/bofs/test_bof.x64.o)<br>
+
+## Help Page
+<img width="669" height="534" alt="image" src="https://github.com/user-attachments/assets/b06613ce-2b00-46c6-b274-7c78ed9e8cc5" />
