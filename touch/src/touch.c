@@ -44,7 +44,7 @@ BOOL createFile(char *filepath) {
         return FALSE;
     }
     KERNEL32$CloseHandle(hFile);
-    BeaconPrintf(CALLBACK_OUTPUT, "[+] created file: %s", filepath);
+    BeaconPrintf(CALLBACK_OUTPUT, "[+] created file: %s\n", filepath);
     return TRUE;
 }
 

@@ -11,11 +11,12 @@
   "bofs": {
     "touch.x64.o": {
       "name": "touch",
-      "quick_description": "Create files and modify timestamps (mimics Unix touch). Timestamps are interpreted as local time on the target.",
+      "quick_description": "Create files and modify timestamps (mimics Unix touch). Timestamps are local time.",
+      "description": "Create empty files or modify all three NTFS timestamps (creation, access, write).\nTimestamps are interpreted as local time on the target machine.\n\nExamples:\n  touch C:\\Windows\\Temp\\test.txt                       Create file (or update to now)\n  touch C:\\Windows\\Temp\\test.txt 01131500               Stamp to Jan 13, 3:00 PM (current year)\n  touch C:\\Windows\\Temp\\test.txt 202301011200           Stamp to Jan 1, 2023 12:00 PM\n  touch C:\\Windows\\Temp\\test.txt 2501131500.30          Stamp with seconds\n  touch C:\\Windows\\Temp\\test.txt \"2020-06-15 08:30:00\"  Freeform date string\n  touch C:\\Windows\\Temp\\test.txt \"\" nocreate            Update to now, skip if missing\n  touch C:\\Windows\\Temp\\test.txt 01131500 nocreate      Stamp only if file exists\n\nTimestamp formats (-t):\n  MMDDhhmm              8 chars, current year assumed\n  YYMMDDhhmm           10 chars, 20xx century assumed\n  CCYYMMDDhhmm         12 chars, full year\n  Any of the above with .ss suffix for seconds\n\nFreeform dates (-d):\n  Any format Windows can parse: \"2020-06-15\", \"Jan 13 2025 3pm\", etc.",
       "args": [
         {"name": "filepath", "type": "z", "description": "Target file path"},
         {"name": "timestamp", "type": "z", "description": "-t [[CC]YY]MMDDhhmm[.ss] or -d freeform date string", "default": ""},
-        {"name": "flags", "type": "z", "description": "-c no create", "default": ""}
+        {"name": "nocreate", "type": "z", "description": "any value to skip creation if file missing", "default": ""}
       ],
       "test_invocation": "touch C:\\Windows\\Temp\\blight_touch_test.txt",
       "test_validator": {"type": "regex", "pattern": "created file:.+|touch .+ ->"},
