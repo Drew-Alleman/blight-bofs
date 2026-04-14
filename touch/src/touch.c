@@ -25,8 +25,16 @@ DECLSPEC_IMPORT BOOL    WINAPI KERNEL32$SetFileTime(HANDLE, const FILETIME*, con
 DECLSPEC_IMPORT BOOL    WINAPI KERNEL32$SystemTimeToFileTime(const SYSTEMTIME*, LPFILETIME);
 DECLSPEC_IMPORT void    WINAPI KERNEL32$GetLocalTime(LPSYSTEMTIME);
 DECLSPEC_IMPORT INT     WINAPI KERNEL32$MultiByteToWideChar(UINT, DWORD, LPCSTR, int, LPWSTR, int);
-DECLSPEC_IMPORT HRESULT WINAPI OLEAUT32$VarDateFromStr(LPCOLESTR, LCID, ULONG, DATE*);
-DECLSPEC_IMPORT INT     WINAPI OLEAUT32$VariantTimeToSystemTime(DATE, LPSYSTEMTIME);
+DECLSPEC_IMPORT HMODULE WINAPI KERNEL32$LoadLibraryA(LPCSTR);
+DECLSPEC_IMPORT FARPROC WINAPI KERNEL32$GetProcAddress(HMODULE, LPCSTR);
+DECLSPEC_IMPORT BOOL    WINAPI KERNEL32$FreeLibrary(HMODULE);
+
+// BOFs can't link against CRT — inline strlen replacement
+static int _len(const char *s) {
+    int n = 0;
+    while (s[n]) n++;
+    return n;
+}
 
 BOOL createFile(char *filepath) {
     HANDLE hFile = KERNEL32$CreateFileA(filepath, GENERIC_WRITE, 0, NULL,
@@ -58,7 +66,7 @@ BOOL touchNow(char *filepath) {
   BOOL parseTimestamp(char *timestamp, FILETIME *ft) {
       char buf[16] = {0};
       int seconds = 0;
-      int len = strlen(timestamp);
+      int len = _len(timestamp);
 
       // Strip .ss suffix if present
       char *dot = NULL;
@@ -121,20 +129,38 @@ BOOL touchNow(char *filepath) {
   }
 
   BOOL parseDateString(char *datestr, FILETIME *ft) {
+      HMODULE hOle = KERNEL32$LoadLibraryA("oleaut32.dll");
+      if (!hOle) return FALSE;
+
+      typedef HRESULT (WINAPI *fnVarDateFromStr)(LPCOLESTR, LCID, ULONG, DATE*);
+      typedef INT (WINAPI *fnVariantTimeToSystemTime)(DATE, LPSYSTEMTIME);
+
+      fnVarDateFromStr pVarDate = (fnVarDateFromStr)KERNEL32$GetProcAddress(hOle, "VarDateFromStr");
+      fnVariantTimeToSystemTime pVarTime = (fnVariantTimeToSystemTime)KERNEL32$GetProcAddress(hOle, "VariantTimeToSystemTime");
+
+      if (!pVarDate || !pVarTime) {
+          KERNEL32$FreeLibrary(hOle);
+          return FALSE;
+      }
+
       wchar_t wide[256] = {0};
       KERNEL32$MultiByteToWideChar(65001, 0, datestr, -1, wide, 256);
 
       DATE dt;
-      if (OLEAUT32$VarDateFromStr(wide, 0x0409, 0, &dt) != 0) {
+      if (pVarDate(wide, 0x0409, 0, &dt) != 0) {
+          KERNEL32$FreeLibrary(hOle);
           return FALSE;
       }
 
       SYSTEMTIME st = {0};
-      if (!OLEAUT32$VariantTimeToSystemTime(dt, &st)) {
+      if (!pVarTime(dt, &st)) {
+          KERNEL32$FreeLibrary(hOle);
           return FALSE;
       }
 
-      return KERNEL32$SystemTimeToFileTime(&st, ft);
+      BOOL success = KERNEL32$SystemTimeToFileTime(&st, ft);
+      KERNEL32$FreeLibrary(hOle);
+      return success;
   }
 
   BOOL stompFile(char *filepath, char *timestamp) {
@@ -175,7 +201,7 @@ void go(char *args, int args_len) {
     BOOL has_timestamp = (timestamp && timestamp[0] != '\0');
 
     if (has_timestamp) {
-        int len = strlen(timestamp);
+        int len = _len(timestamp);
         // Only enforce minimum length for numeric -t format, not -d freeform
         BOOL is_numeric = TRUE;
         for (int i = 0; i < len; i++) {

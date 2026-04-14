@@ -11,7 +11,7 @@
   "bofs": {
     "touch.x64.o": {
       "name": "touch",
-      "quick_description": "Create files and modify timestamps (mimics Unix touch)",
+      "quick_description": "Create files and modify timestamps (mimics Unix touch). Timestamps are interpreted as local time on the target.",
       "args": [
         {"name": "filepath", "type": "z", "description": "Target file path"},
         {"name": "timestamp", "type": "z", "description": "-t [[CC]YY]MMDDhhmm[.ss] or -d freeform date string", "default": ""},
